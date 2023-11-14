@@ -48,9 +48,7 @@ class Doctor_onboarding:
     state = (By.ID, "registering_state")
     council_name = (By.ID, "registeringCouncilNameDoctor")
     council_number = (By.ID, "registeringCouncilNumberDoctor")
-    qualification = (By.XPATH,
-                     "//div[@class='v-input v-text-field v-text-field--placeholder v-select v-select--chips v-input--hide-details theme--light']//i[@class='v-icon material-icons theme--light'][normalize-space()='arrow_drop_down']")
-    list_qailification = (By.XPATH, "//div[contains(text(),'MBBS')]")
+
     not_haveclinic = (By.XPATH, "//label[normalize-space()='I do not have a Clinic']")
     alert = (By.XPATH, "//div[@role='dialog']")
     Add_clinic = (By.XPATH, "//div[normalize-space()='Add Clinic +']")
@@ -58,7 +56,7 @@ class Doctor_onboarding:
     follow_up = (By.ID, "followUpFeesDoctor")
 
     hovered_followup = (By.XPATH, "//p[contains(@class,'text-success')]")
-    i_followup = (By.XPATH, "//div[@data-v-4ac3fb3c and @class='i-hover-tooltip']")
+    i_followup = (By.XPATH, "//div[@class='icon-div max-content']//*[name()='svg']//*[name()='g' and @id='Layer_4']//*[name()='circle' and contains(@class,'st0')]")
     clinic_no = (By.XPATH, "//input[@placeholder='Clinic Contact Number']")
     clinic_no_val = (By.XPATH, "//span[normalize-space()='This field must be at least 6 characters']")
     clinic_address = (By.XPATH, "//input[@placeholder='Address']")
@@ -123,7 +121,7 @@ class Doctor_onboarding:
     )
     qual_mandatory = (
         By.XPATH,
-        "//span[@class='text-danger required-fields' and contains(text(), 'This field is required') and preceding::input[@name='Qualification']]"
+        "//span[@class='text-danger required-fields' and contains(text(), 'This field is required') and preceding::input[@name='Highest-Qualification']]"
     )
     since_mandatroy = (
         By.XPATH,
@@ -144,8 +142,30 @@ class Doctor_onboarding:
     practice_year_validation = (
         By.XPATH, "//span[@class='text-danger' and text()='Practice experience should not exceed age']")
 
-    def get_list_qualification(self):
-        return self.driver.find_element(*Doctor_onboarding.list_qailification)
+    highest_qualification_dropdown = (By.XPATH, "//input[@placeholder='Highest Qualification']")
+    main_qualification = (By.XPATH,
+                          "//div[contains(@class,'v-menu__content theme--light menuable__content__active v-autocomplete__content')]//div[contains(@class,'v-list__tile__title')][normalize-space()='MBBS']")
+
+    other_qualification_dropdown = (By.XPATH, "//input[contains(@placeholder,'Other Qualifications')]")
+    other_qualification1 = (By.XPATH,
+                            "//div[contains(@class,'v-menu__content theme--light menuable__content__active v-autocomplete__content')]//div[contains(@class,'v-list__tile__title')][normalize-space()='MBBS']")
+    other_qualification2 = (By.XPATH,
+                            "//div[contains(@class,'v-menu__content theme--light menuable__content__active v-autocomplete__content')]//div[contains(@class,'v-list__tile__title')][normalize-space()='MD']")
+    def get_Highest_Qualification(self):
+        return WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(Doctor_onboarding.highest_qualification_dropdown)
+        )
+    def get_main_qualification(self):
+        return self.driver.find_element(*Doctor_onboarding.main_qualification)
+
+    def get_other_qualificationdropdown(self):
+        return self.driver.find_element(*Doctor_onboarding.other_qualification_dropdown)
+
+    def get_otherqualification1(self):
+        return self.driver.find_element(*Doctor_onboarding.other_qualification1)
+
+    def get_otherqualification2(self):
+        return self.driver.find_element(*Doctor_onboarding.other_qualification2)
 
     def get_practice_year_validation(self):
         return self.driver.find_element(*Doctor_onboarding.practice_year_validation)
@@ -367,9 +387,6 @@ class Doctor_onboarding:
             EC.visibility_of_element_located(Doctor_onboarding.council_number)
         )
 
-    def get_qualification(self):
-        return self.driver.find_element(*Doctor_onboarding.qualification)
-
     def get_not_haveclinic(self):
         return self.driver.find_element(*Doctor_onboarding.not_haveclinic)
 
@@ -395,7 +412,9 @@ class Doctor_onboarding:
         return self.driver.find_element(*Doctor_onboarding.hovered_followup)
 
     def get_i_followup(self):
-        return self.driver.find_element(*Doctor_onboarding.i_followup)
+        return WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(Doctor_onboarding.i_followup)
+        )
 
     def get_clinic_no(self):
         return self.driver.find_element(*Doctor_onboarding.clinic_no)
@@ -437,7 +456,6 @@ class Doctor_onboarding:
         time.sleep(2)
         self.get_select_role().click()
         time.sleep(1)
-
 
         self.get_num().send_keys(doct_no)
         self.get_pwd().send_keys(pwd)

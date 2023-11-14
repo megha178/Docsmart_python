@@ -174,7 +174,7 @@ class test_New_signup:
             self.get_check_1().click()
             self.get_check_2().click()
 
-            time.sleep(5)
+            time.sleep(2)
             self.get_send_otp().click()
             try:
                 # user_exists_element = self.get_user_already_exisit()
@@ -190,7 +190,7 @@ class test_New_signup:
         time.sleep(2)
         otp = self.call_api_to_fetch_otp(mobile_no)
         self.get_Enter_otp().send_keys(otp)
-        time.sleep(5)
+        time.sleep(3)
         self.get_verify_otp().click()
         time.sleep(2)
         self.get_yes_option().click()

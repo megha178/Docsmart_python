@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # from tests.common import doct_no
-from src.pageObjects.Doctor_onboarding import Doctor_onboarding
+#from src.pageObjects.Doctor_onboarding import Doctor_onboarding
 # from .test_signup_doc import TestDoctorSignup
 from datetime import datetime, timedelta
 from selenium.webdriver.common.keys import Keys

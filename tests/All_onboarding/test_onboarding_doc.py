@@ -173,14 +173,24 @@ class TestDoctoronboading:
         branch_of_medicine = doct_onboarding.select_branch()
         assert branch_of_medicine.is_displayed() and branch_of_medicine.is_enabled(), "branch_of_medicine is not disaplyed or enabaled"
         time.sleep(2)
-        qualification = doct_onboarding.get_qualification()
+        div_element = doct_onboarding.get_element()
+        scroll_script = "arguments[0].scrollTop += 400;"
+        driver.execute_script(scroll_script, div_element)
+
+        qualification = doct_onboarding.get_Highest_Qualification()
         qualification.click()
-        time.sleep(2)
-        list_qualification = doct_onboarding.get_list_qualification()
-        list_qualification.click()
-        time.sleep(2)
+        qualification1 = doct_onboarding.get_main_qualification()
+        qualification1.click()
+        doct_onboarding.get_other_qualificationdropdown().click()
+        doct_onboarding.get_otherqualification1().click()
+        doct_onboarding.get_alert().is_displayed()
+        alert_text = doct_onboarding.get_alert()
+        actual_text = alert_text.text
+        expected_text = "You cannot choose the qualification already selected in Higher qualifications."
+        assert expected_text in actual_text, f"Expected alert text: '{expected_text}', Actual alert text: '{actual_text}'"
+        doct_onboarding.get_alert_ok().click()
+        doct_onboarding.get_otherqualification2().click()
         doct_onboarding.select_state()
-        time.sleep(5)
 
     @pytest.mark.doc_onboarding
     def test_council_name_no(self, setup):
@@ -249,6 +259,7 @@ class TestDoctoronboading:
 
     # time.sleep(5)
     @pytest.mark.doc_onboarding
+    @pytest.mark.smoke()
     def test_do_nothave_clinic(self, setup):
         driver = setup
         doct_onboarding = Doctor_onboarding(driver)
